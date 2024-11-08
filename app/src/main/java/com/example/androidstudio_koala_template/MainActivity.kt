@@ -37,28 +37,20 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
+
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import com.example.androidstudio_koala_template.ui.theme.AndroidStudioKoalaTemplateTheme
 
 class MainActivity : ComponentActivity() {
@@ -81,11 +73,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     var likes: Int by remember { mutableStateOf(997) }
-    var subscribers: Int by remember { mutableStateOf(12) }
-    var notifications: Int by remember { mutableStateOf(204) }
     var selectedText: String by remember { mutableStateOf("") }
     var expanded: Boolean by remember { mutableStateOf(false) }
-    val hobbies = listOf("Play music", "Practice sport", "Programming", "Reading", "Other")
+    val icons = listOf("Call", "ThumbUp", "Email", "AcountBox", "Build", "Check", "Create", "Delete", "FavoriteBorder", "LocationOn")
+    var numMin: Int by remember { mutableStateOf(0) }
+    var numMax: Int by remember { mutableStateOf(10) }
+    var numMinString: String = numMin.toString()
+    var numMaxString: String = numMax.toString()
+    var valorNotis: Int by remember { mutableStateOf(0) }
+    var valorNotisString : String = valorNotis.toString()
 
     Box(
         modifier = Modifier
@@ -104,28 +100,55 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                     // Afegir colors i detalls al desplegable:
                     .border(1.dp, Color.Black, RoundedCornerShape(4.dp))
             ) {
-                hobbies.forEach { hobby ->
+                icons.forEach { icon ->
                     DropdownMenuItem(
-                        text = { Text(text = hobby) },
+                        text = { Text(text = icon) },
                         onClick = {
                             expanded = false
-                            selectedText = hobby
+                            selectedText = icon
                         }
                     )
                 }
             }
 
-            HorizontalDivider(
-                modifier = Modifier
-                    .padding(0.dp, 10.dp),
-                thickness = 2.dp,
-                color = Color.Blue
-            )
+            Column (
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(1.0f)
-            ) {
+            ){
+                Column (
+
+                ) {
+                    TextField(
+                        value = numMinString,
+                        onValueChange = { numMinString = it },
+                        label = {
+                            Text(text = "Min")
+                        }
+                    )
+                }
+
+                Column (
+
+                ) {
+                    TextField(
+                        value = numMaxString,
+                        onValueChange = { numMaxString = it },
+                        label = {
+                            Text(text = "Min")
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier)
+
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(0.dp, 10.dp),
+                    thickness = 2.dp,
+                    color = Color.Blue
+                )
+
+                Spacer(modifier = Modifier)
+
                 BadgedBox(modifier = Modifier
                     .padding(20.dp, 0.dp),
                     badge = {
@@ -134,12 +157,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                             contentColor = Color.White,
                             content = {
                                 Text(
-                                    text =
-                                    if (likes > 999) {
-                                        "999+"
-                                    } else {
-                                        "$likes"
-                                    }
+                                    text = valorNotisString
                                 )
                             }
                         )
@@ -147,68 +165,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 ) {
                     Icon(
                         Icons.Default.ThumbUp,
-                        contentDescription = "Likes"
+                        contentDescription = "Icon"
                     )
-                }
-
-                BadgedBox(modifier = Modifier
-                    .padding(20.dp, 0.dp),
-                    badge = {
-                        Badge(
-                            containerColor = Color.Blue,
-                            contentColor = Color.Cyan,
-                            content = {
-                                Text("$subscribers")
-                            }
-                        )
-                    }
-                ) {
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = "Subscribe"
-                    )
-                }
-
-                BadgedBox(modifier = Modifier
-                    .padding(20.dp, 0.dp),
-                    badge = {
-                        Badge(
-                            containerColor = Color.DarkGray,
-                            contentColor = Color.LightGray,
-                            content = {
-                                Text("$notifications")
-                            }
-                        )
-                    }
-                ) {
-                    Icon(
-                        Icons.Default.Notifications,
-                        contentDescription = "Notificacions"
-                    )
-                }
-            }
-
-            HorizontalDivider(
-                modifier = Modifier
-                    .padding(0.dp, 10.dp),
-                thickness = 5.dp,
-                color = Color.LightGray
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(1.0f)
-            ) {
-                Button(onClick = { likes++ }) {
-                    Text("Like")
-                }
-
-                Button(onClick = { subscribers++ }) {
-                    Text("Subscribe")
-                }
-
-                Button(onClick = { notifications++ }) {
-                    Text("Notifications")
                 }
             }
         }
