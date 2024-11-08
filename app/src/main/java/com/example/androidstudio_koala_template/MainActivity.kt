@@ -165,7 +165,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 ) {
                     Icon(
                         Icons.Default.ThumbUp,
-                        contentDescription = "Icon"
+                        contentDescription = "Icona"
                     )
                 }
             }
